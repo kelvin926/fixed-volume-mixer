@@ -1,0 +1,7 @@
+.build/
+*.pdb
+*.log
+settings.json
+settings.json.tmp
+settings.unreadable.json
+.vs/
