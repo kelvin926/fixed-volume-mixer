@@ -1,5 +1,7 @@
 # 고정 볼륨 믹서
 
+<img src="assets/FixedVolumeMixer.png" width="112" alt="고정 볼륨 믹서 아이콘">
+
 짧게 소리를 내고 사라지는 프로그램도 목록에 남겨두는 Windows용 볼륨 믹서입니다.
 
 ## 실행
@@ -66,5 +68,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test
 
 - `src/FixedVolumeMixer.cs`: Windows Forms UI, 저장 및 Core Audio 제어
 - `dist/FixedVolumeMixer.exe`: 실행 파일
+- `assets/`: 앱 아이콘 원본 PNG, 여러 해상도의 ICO 및 생성 기록
 - `tests/`: 오디오 세션 통합 테스트
 - `사용방법.txt`: 간단한 사용 설명

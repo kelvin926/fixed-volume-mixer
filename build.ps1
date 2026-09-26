@@ -3,10 +3,11 @@ $ErrorActionPreference = 'Stop'
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 if (-not (Test-Path -LiteralPath $compiler)) { throw '.NET Framework x64 C# compiler not found.' }
 $source = Join-Path $PSScriptRoot 'src\FixedVolumeMixer.cs'
+$icon = Join-Path $PSScriptRoot 'assets\FixedVolumeMixer.ico'
 $dist = Join-Path $PSScriptRoot 'dist'
 New-Item -ItemType Directory -Force -Path $dist | Out-Null
 $refs = @('/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll','/reference:System.Web.Extensions.dll')
-& $compiler /nologo /target:winexe /platform:x64 /optimize+ "/out:$dist\FixedVolumeMixer.exe" @refs $source
+& $compiler /nologo /target:winexe /platform:x64 /optimize+ "/win32icon:$icon" "/resource:$icon,FixedVolumeMixer.AppIcon" "/out:$dist\FixedVolumeMixer.exe" @refs $source
 if ($LASTEXITCODE -ne 0) { throw 'Application compilation failed.' }
 Write-Host 'Built dist/FixedVolumeMixer.exe'
 if ($Test) {

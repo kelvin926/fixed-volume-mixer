@@ -269,6 +269,16 @@ namespace FixedVolumeMixer {
         static float GetScale(){using(var g=Graphics.FromHwnd(IntPtr.Zero))return g.DpiX/96f;}
         public static int Px(int value){return (int)Math.Round(value*scale);}
     }
+    static class AppIcons {
+        public static readonly Icon Window = Load(48);
+        public static readonly Icon Tray = Load(Ui.Px(16));
+        static Icon Load(int size) {
+            using(var stream=typeof(AppIcons).Assembly.GetManifestResourceStream("FixedVolumeMixer.AppIcon")) {
+                if(stream==null)return (Icon)SystemIcons.Application.Clone();
+                using(var icon=new Icon(stream,size,size))return (Icon)icon.Clone();
+            }
+        }
+    }
     class AppRow : UserControl {
         readonly Model model; readonly AppState app;
         readonly Label title,detail,status,percent;
@@ -328,7 +338,7 @@ namespace FixedVolumeMixer {
             SuspendLayout();
             this.model=model;this.preview=preview;
             Text="고정 볼륨 믹서";Font=new Font("맑은 고딕",9f);BackColor=Color.FromArgb(243,245,249);ClientSize=new Size(730,640);MinimumSize=new Size(620,430);StartPosition=FormStartPosition.CenterScreen;
-            AutoScaleDimensions=new SizeF(96f,96f);AutoScaleMode=AutoScaleMode.Dpi;Icon=SystemIcons.Application;
+            AutoScaleDimensions=new SizeF(96f,96f);AutoScaleMode=AutoScaleMode.Dpi;Icon=AppIcons.Window;
             var header=new Panel {Dock=DockStyle.Top,Height=132,Padding=new Padding(20),BackColor=Color.White};
             header.Controls.Add(new Label {Text="고정 볼륨 믹서",Left=22,Top=17,Width=350,Height=31,Font=new Font("맑은 고딕",17f,FontStyle.Bold)});
             header.Controls.Add(new Label {Text="소리가 끝나도 앱은 남습니다. 다음 재생에도 저장한 볼륨을 적용합니다.",Left=24,Top=56,Width=660,Height=23,ForeColor=Color.FromArgb(90,100,115)});
@@ -351,7 +361,7 @@ namespace FixedVolumeMixer {
             Controls.Add(list);Controls.Add(bottom);Controls.Add(header);
             list.Resize+=delegate{foreach(var r in rows.Values)r.Width=Math.Max(Ui.Px(490),list.ClientSize.Width-list.Padding.Horizontal-Ui.Px(14));};
             var menu=new ContextMenuStrip();menu.Items.Add("믹서 열기",null,delegate{Reveal();});menu.Items.Add("완전히 종료",null,delegate{quitting=true;Close();});
-            tray=new NotifyIcon {Icon=SystemIcons.Application,Text="고정 볼륨 믹서",ContextMenuStrip=menu,Visible=!preview};tray.DoubleClick+=delegate{Reveal();};
+            tray=new NotifyIcon {Icon=AppIcons.Tray,Text="고정 볼륨 믹서",ContextMenuStrip=menu,Visible=!preview};tray.DoubleClick+=delegate{Reveal();};
             timer=new System.Windows.Forms.Timer {Interval=200};timer.Tick+=delegate{RefreshRows();};timer.Start();
             if(!preview)engine=new AudioEngine(model);
             ResumeLayout(true);
